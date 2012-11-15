@@ -1,0 +1,7 @@
+composer.phar
+vendor
+
+.buildpath
+.project
+.settings
+

@@ -1,0 +1,20 @@
+{
+    "name": "guiguiboy/php-site-crawler",
+    "version": "0.0.1",
+    "description": "CLI PHP Site crawler",
+    "authors": [
+        {
+            "name": "Guillaume",
+            "email": "guillaume.bretou@gmail.com"
+        }
+    ],
+    "require": {
+		"php": ">=5.3.0"
+    },
+    "keywords": ["cli", "command-line", "crawler"],
+    "autoload": {
+        "psr-0": {
+            "SiteCrawler" : "."
+        }
+    }
+}
