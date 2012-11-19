@@ -16,7 +16,7 @@ class NTLM extends Authentication
 	{
 		$curl = curl_init();
 		curl_setopt_array($curl, $this->curlOptions);
-		curl_exec($curl);
+		$resp = curl_exec($curl);
 		return $curl;
 	}
 }

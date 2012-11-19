@@ -13,7 +13,5 @@ $crawlConfig = array(
     CURLOPT_COOKIEFILE => '/tmp/cookie.txt',
 );
 
-$crawler = new SiteCrawler\Crawler('http://pro.restaurant.michelin.fr', $crawlConfig);
-$crawler->addCallback(function($response) { echo "toto\n";});
-$crawler->addCallback(function($response) { echo "tata\n";});
+$crawler = new SiteCrawler\Crawler('http://restaurant.michelin.fr', $crawlConfig);
 $crawler->process();

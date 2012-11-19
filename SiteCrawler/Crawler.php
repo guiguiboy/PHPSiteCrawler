@@ -101,19 +101,44 @@ class Crawler
 		foreach ($this->callbacks as $callback)
 			$callback($response);
 		
-		$matches = array();
-		preg_match_all('^<.*(src|href)=[\'"]{1}([[:alnum:]/_\.-]+)[\'"]{1}.*^i', $response, $matches);
+		foreach ($this->parseResponse($response) as $link)
+			$this->crawl($link);
+	}
+	
+	/**
+	 * Parses the response and returns an array with urls.
+	 * 
+	 * @param string $response
+	 * 
+	 * @return array
+	 */
+	protected function parseResponse($response)
+	{
+		if ($response == "")
+			return array();
+
+		$links    = array();
+		$document = new \DOMDocument();
+		libxml_use_internal_errors(true);
+		$document->loadHTML($response);
+		libxml_use_internal_errors(false);
 		
-		foreach ($matches[2] as $match)
+		foreach($document->getElementsByTagName('a') as $a) 
 		{
-			if (preg_match('/^.*\.(jpg|jpeg|png|gif|js|tiff|css|ico)$/i', $match))
+			$link = $a->getAttribute('href');
+			if (preg_match('/^.*\.(jpg|jpeg|png|gif|js|tiff|css|ico)$/i', $link))
+				continue;
+			if (preg_match('/^mailto:/i', $link))
 				continue;
 
-			if (preg_match('|http[s]?://|', $match)) {
-				$this->crawl($match);
-			} else {
-				$this->crawl($this->siteUrl . $match);
-			}
+			if (!preg_match('|https?://|', $link))
+				$link = $this->siteUrl . $link;
+			
+			if (!strstr($link, $this->siteUrl))
+				continue;
+			
+        	$links[$link] = true;
 		}
+		return array_keys($links);
 	}
 }
